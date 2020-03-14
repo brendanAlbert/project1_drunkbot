@@ -1,0 +1,111 @@
+// Heuristic best first search pseudocode
+
+// define node
+// node contains: g cost, h cost, f cost, (x, y) coordinants, parent
+
+// These are the definitions of each variable of our node class
+/* g cost is this nodes distance from the start point
+g cost = parent g cost + (the distance from one position to an adjacent position)
+*/
+
+/* h cost is this nodes distance from the goal
+if x > goal x then total x = x - goal x
+else total x = goal x - x
+
+if y > goal y then total y = y - goal y
+else total y = goal y - y
+
+h cost = total x + total y
+(The smaller the value the closer it is to the goal)
+*/
+
+/* f cost is the distance from both the start and the goal
+f cost = g cost + h cost
+*/
+
+// (x, y) coordinants are the position of the node in the maze
+// parent is a pointer to the node that this node came from
+
+/* Set up before the loop
+open initialized empty (open is a list of nodes)
+closed initialized empty (closed is a list of nodes)
+goal set (the goal is just coordinants, not a node)
+declare and initialize a start node with appropriate coordinants, h cost, and f cost. g cost is 0 and parent is null
+declare a current node and best candidate node both initialized null
+declare a bool called backtrack initialized as false
+*/
+
+/*
+while true
+
+  best candidate = first node in open
+  for each node in open that is a neighbor of current
+    if best candidates f cost > nodes f cost
+      best candidate = node
+    else if best candidate is not a neighbor node
+      best candidate = node
+
+  for each node in open
+    if best candidate f cost > nodes f cost and is not a neighbor of current
+      best candidate = node
+      backtrack = true
+
+  if backtrack is true
+    backTrackFunc(current, best candidate);
+
+  backtrack = false
+  display all closed nodes and current node
+
+  current = best candidate
+  remove current from open
+  add current to closed
+
+  if current's coordinants is the goal
+    display best path by going through each parent node until a parent with a g cost of 0 is found
+    break
+
+  for each neighbor of current (checking neighbors by coordinants a certain distance from current)
+    if neighbor is available (not in closed, a wall, or off the grid)
+      if neighbor is not in open
+        create a new node
+        set each value of the node appropriately (definitions above)
+        add neighbor to open
+      else if neighbor is in open and f cost is lower than it would be if current was its parent
+        set neighbors g cost to current g cost + (the distance from one position to an adjacent position)
+        reset neighbors f cost
+        set neighbors parent to current
+*/
+
+/* Backtrack handling
+
+backTrackFunc(current, best candidate)
+  current = current's parent
+
+  display current
+
+  next parent = best candidate
+  while next parents g cost does not equal 0
+    if current equals next parent
+      forwardTrackFunc(current, best candidate)
+      return
+    next parent = next parent's parent
+
+  backTrackFunc(current, best candidate)
+*/
+
+/* Forwardtrack handling
+
+forwardTrackFunc(current, best candidate)
+  next parent = best candidate
+  while next parent's parent does not equal current
+    next parent = next parent's parent
+
+  current = next parent
+
+  if current is best candidate
+    return
+
+  display current
+
+  forwardTrackFunc(current, best candidate)
+*/
